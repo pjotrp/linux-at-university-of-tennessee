@@ -17,6 +17,8 @@ developed on Linux to run on servers it only makes sense to run Linux
 everywhere. That is what we do and that is what we document here where
 we proudly run Linux at the University of Tennessee.
 
+Note that there are people in the IT department who know Linux. Simply
+because they also have to run Linux machines!
 
 ** Eduroam
 
@@ -52,31 +54,37 @@ network={
 
 Using your E-mail address and password. Start wpa_supplicant with something like
 
-: pkill wpa_supplicant ; wpa_supplicant -Dwext -i$WLAN -c /etc/wpa_supplicant_login.conf &
+: pkill wpa_supplicant ; wpa_supplicant -Dwext -i$WLAN -c /etc/wpa_supplicant_eduroam.conf &
 
-wher WLAN is your wifi interface, see
+where WLAN is your wifi interface, see
 
 : ip a
 
-Next fire up dhcp
+E.g.
+
+: export WLAN=wlp3s0
+
+Next fire up dhcp so you can get on the network
 
 : pkill dhclient ; dhclient -v $WLAN
 
 ** Printing and the VLAN
 
-Eduroam works great but it puts you on a separate VLAN with no access to
-printers. To get access to the proper VLAN login with just your netid (not
-your E-mail address!!) using the same wpa_supplicant configuration as
-with eduroam. On success the IP address you get from dhclient should be different. If that is
-not the case send the output of
+Eduroam works great but it puts you on a separate VLAN with no access
+to printers. To get access to the proper VLAN login with just your
+netid (not your E-mail address!!) using the same wpa_supplicant
+configuration as with eduroam. On success the IP address you get from
+dhclient should be different. If that is not the case send the output
+of
 
 : ip a
 
-to your support desk and ask them to put your machine on the VLAN. After
-that you should see the printers.
+to your support desk and ask them to put your machine on the
+VLAN. After their confirmation you should see the printers. It may
+help to send the IP address of the printer too.
 
-With CUPS you can install a printer. One printer in our VLAN is configured
-as
+With CUPS you can install a printer. One printer in our VLAN is
+configured as
 
 : cat /etc/cups/printers.conf
 
