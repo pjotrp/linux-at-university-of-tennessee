@@ -146,5 +146,6 @@ Linux. That may be good enough for most of us.
 
 VPN works via openconnect
 
-:openconnect uthscvpn1.uthsc.edu
+: openconnect uthscvpn1.uthsc.edu
+
 
