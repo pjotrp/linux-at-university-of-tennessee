@@ -1,0 +1,134 @@
+#+TITLE: Unix at the University of Tennessee
+
+* Table of Contents                                                     :TOC:
+ - [[#using-unix-ut][Using Unix @UT]]
+   - [[#eduroam][Eduroam]]
+   - [[#printing-and-the-vlan][Printing and the VLAN]]
+   - [[#2-factor-authentication][2-factor authentication]]
+   - [[#e-mail][E-mail]]
+   - [[#webmail-and-microsoft-tools][Webmail and Microsoft tools]]
+
+* Using Unix @UT
+
+Despite the fact that Linux systems are common, many academic
+institutions make it challenging to run Linux and other Unices on
+laptops, workstations and servers. In bioinformatics, most tools are
+developed on Linux to run on servers it only makes sense to run Linux
+everywhere. That is what we do and that is what we document here where
+we proudly run Linux at the University of Tennessee.
+
+
+** Eduroam
+
+Eduroam works great on Linux with wpa_supplicant and network managers.
+The configuration looks like:
+
+: cat /etc/wpa_supplicant_eduroam.conf
+
+#+BEGIN_SRC
+# Copied from https://github.com/RasmusWL/eduroam
+
+ctrl_interface=/var/run/wpa_supplicant
+eapol_version=1
+ap_scan=1
+fast_reauth=1
+
+network={
+        ssid="eduroam"
+        # key_mgmt=IEEE8021X WPA-NONE WPA-EAP
+        key_mgmt=WPA-EAP
+        pairwise=CCMP
+        group=CCMP TKIP
+        eap=PEAP
+        identity="your-email@uthsc.edu"
+        password="***"
+        #ca_cert="/location/of/cert" # This might not be required.
+        phase1="tls_disable_tlsv1_1=1 tls_disable_tlsv1_2=1"
+        phase2="auth=MSCHAPV2"
+        priority=2
+        auth_alg=OPEN
+}
+#+END_SRC
+
+Using your E-mail address and password. Start wpa_supplicant with something like
+
+: pkill wpa_supplicant ; wpa_supplicant -Dwext -i$WLAN -c /etc/wpa_supplicant_login.conf &
+
+wher WLAN is your wifi interface, see
+
+: ip a
+
+Next fire up dhcp
+
+: pkill dhclient ; dhclient -v $WLAN
+
+** Printing and the VLAN
+
+Eduroam works great but it puts you on a separate VLAN with no access to
+printers. To get access to the proper VLAN login with just your netid (not
+your E-mail address!!) using the same wpa_supplicant configuration as
+with eduroam. On success the IP address you get from dhclient should be different. If that is
+not the case send the output of
+
+: ip a
+
+to your support desk and ask them to put your machine on the VLAN. After
+that you should see the printers.
+
+With CUPS you can install a printer. One printer in our VLAN is configured
+as
+
+: cat /etc/cups/printers.conf
+
+#+BEGIN_SRC
+<DefaultPrinter Xerox6360Color>
+  UUID urn:uuid:9a41b18c-c26b-3bf6-5d34-287b3d3457a7
+  Info Xerox6360Color
+  MakeModel Xerox Phaser 6360 Foomatic/Postscript (recommended)
+  DeviceURI socket://172.21.216.173
+  State Idle
+  StateTime 1558107438
+  ConfigTime 1558028722
+  Type 8433692
+  Accepting Yes
+  Shared No
+  JobSheets none none
+  QuotaPeriod 0
+  PageLimit 0
+  KLimit 0
+  OpPolicy default
+  ErrorPolicy retry-job
+  Attribute marker-colors \#00FFFF,#FF00FF,#FFFF00,#000000,none,none,none
+  Attribute marker-levels 23,29,20,78,90,95,-1
+  Attribute marker-names Cyan High Capacity Toner Cartridge, Phaser 6360, P/N 106R01218,Magenta High Capacity Toner Cartridge, Phaser 6360, P/N 106R01219,Yellow High Capacity Toner Cartridge, Phaser 6360, P/N 106R01220,Black High Capacity Toner Cartridge, Phaser 6360, P/N 106R01221,Imaging Unit, Phaser 6360, P/N 108R00645,Fuser, Phaser 6360, P/N 115R00055 (110 V)/115R00056 (220 V),Transfer Roller, Phaser 6360, P/N 108R00646
+  Attribute marker-types toner,toner,toner,toner,opc,fuser,transfer-unit
+  Attribute marker-change-time 1558107438
+</DefaultPrinter>
+#+END_SRC
+
+Note that while IPP is configured on this printer it did not
+respond to ipp://. It does work with above socket link.
+
+** 2-factor authentication
+
+2-factor authentication was recently introduced. It requires a special
+app for Android/iPhone. Not exactly Linux specific and UT does not
+advertise it, but you can also get a token from the help desk. This is
+a preferred option because it always works (until the battery runs
+out). Also it is more secure to use a token.
+
+** TODO E-mail
+
+IMAP and forwarding are available.
+
+** Webmail and Microsoft tools
+
+Webmail and other web-based tools work in Firefox. Some SAP-based
+tools require the Chrome browser. Your mileage may vary, but in
+general it is a good idea to try different browsers.
+
+Microsoft software provides by UT does not work on Linux. You can opt
+to use Libreoffice/Openoffice and such, but it may be painful
+collaborating with people that use these tools (at least for shared
+writing). Note: it is possible to run Microsoft Office 2012 in Wine on
+Linux. That may be good enough for most of us.
