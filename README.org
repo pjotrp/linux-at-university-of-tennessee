@@ -5,6 +5,7 @@
    - [[#eduroam][Eduroam]]
    - [[#printing-and-the-vlan][Printing and the VLAN]]
    - [[#2-factor-authentication][2-factor authentication]]
+   - [[#vpn][VPN]]
    - [[#e-mail][E-mail]]
    - [[#webmail-and-microsoft-tools][Webmail and Microsoft tools]]
 
@@ -124,6 +125,17 @@ app for Android/iPhone. Not exactly Linux specific and UT does not
 advertise it, but you can also get a token from the help desk. This is
 a preferred option because it always works (until the battery runs
 out). Also it is more secure to use a token.
+
+** VPN
+
+UT uses Cisco VPNs which allow you to use your machine from outside as
+if it is on the local network. I use the following entry point for UTHSC
+using [[http://www.infradead.org/openconnect/][openconnect]], but there are others you can use. Simply
+
+: openconnect --user=yourname https://uthscvpn1.uthsc.edu/ --passwd-on-stdin
+
+Type your password and ENTER and you should be able to get in. Note it
+will rewire the full network routing.
 
 ** TODO E-mail
 
