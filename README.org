@@ -7,6 +7,7 @@
    - [[#2-factor-authentication][2-factor authentication]]
    - [[#vpn][VPN]]
    - [[#e-mail][E-mail]]
+   - [[#VPN][VPN]]
    - [[#webmail-and-microsoft-tools][Webmail and Microsoft tools]]
 
 * Using Unix @UT
@@ -152,3 +153,11 @@ to use Libreoffice/Openoffice and such, but it may be painful
 collaborating with people that use these tools (at least for shared
 writing). Note: it is possible to run Microsoft Office 2012 in Wine on
 Linux. That may be good enough for most of us.
+
+** VPN
+
+VPN works via openconnect
+
+: openconnect uthscvpn1.uthsc.edu
+
+
