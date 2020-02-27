@@ -118,7 +118,8 @@ configured as
 
 Note that while IPP is configured on this printer it did not
 respond to ipp://. It does work with above socket link. It may be advisable to use 
-the DNS name, e.g. socket://tsrb-81795-410h.uthsc.edu
+the DNS name, e.g. socket://tsrb-81795-410h.uthsc.edu. The driver that works best
+is Xerox Phaser 6360DN - CUPS+Gutenprint v5.2.11 (grayscale, 2-sided printing).
 
 ** 2-factor authentication
 
