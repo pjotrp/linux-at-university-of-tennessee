@@ -117,7 +117,8 @@ configured as
 #+END_SRC
 
 Note that while IPP is configured on this printer it did not
-respond to ipp://. It does work with above socket link.
+respond to ipp://. It does work with above socket link. It may be advisable to use 
+the DNS name, e.g. socket://tsrb-81795-410h.uthsc.edu
 
 ** 2-factor authentication
 
