@@ -5,10 +5,10 @@
    - [[#eduroam][Eduroam]]
    - [[#printing-and-the-vlan][Printing and the VLAN]]
    - [[#2-factor-authentication][2-factor authentication]]
-   - [[#vpn][VPN]]
    - [[#e-mail][E-mail]]
-   - [[#VPN][VPN]]
    - [[#webmail-and-microsoft-tools][Webmail and Microsoft tools]]
+   - [[#vpn][VPN]]
+   - [[#openconnect][Openconnect]]
 
 * Using Unix @UT
 
@@ -117,7 +117,7 @@ configured as
 #+END_SRC
 
 Note that while IPP is configured on this printer it did not
-respond to ipp://. It does work with above socket link. It may be advisable to use 
+respond to ipp://. It does work with above socket link. It may be advisable to use
 the DNS name, e.g. socket://tsrb-81795-410h.uthsc.edu. The driver that works best
 is Xerox Phaser 6360DN - CUPS+Gutenprint v5.2.11 (grayscale, 2-sided printing).
 
@@ -127,18 +127,8 @@ is Xerox Phaser 6360DN - CUPS+Gutenprint v5.2.11 (grayscale, 2-sided printing).
 app for Android/iPhone. Not exactly Linux specific and UT does not
 advertise it, but you can also get a token from the help desk. This is
 a preferred option because it always works (until the battery runs
-out). Also it is more secure to use a token.
+out).
 
-** VPN
-
-UT uses Cisco VPNs which allow you to use your machine from outside as
-if it is on the local network. I use the following entry point for UTHSC
-using [[http://www.infradead.org/openconnect/][openconnect]], but there are others you can use. Simply
-
-: openconnect --user=yourname https://uthscvpn1.uthsc.edu/ --passwd-on-stdin
-
-Type your password and ENTER and you should be able to get in. Note it
-will rewire the full network routing.
 
 ** TODO E-mail
 
@@ -158,8 +148,43 @@ Linux. That may be good enough for most of us.
 
 ** VPN
 
-VPN works via openconnect
+*** Cisco anyconnect
 
-: openconnect uthscvpn1.uthsc.edu
+UTHSC VPN requires two factor authentication (2FA) using the Cisco
+anyconnect protocol. What worked the first time is getting a recent
+version of the client *)
 
+: tar xvzf anyconnect-linux64-$VER-predeploy-k9.tar.gz
+: cd any*/vpn
 
+Note the install script wants to install in /opt/cisco. You can modify that.
+
+: mkdir /opt/cisco
+: ./vpn_install.sh
+
+Which is running as ~/opt/cisco/anyconnect/bin/vpnagentd~ daemon with
+
+: /opt/cisco/anyconnect/bin/vpnagentd -execv_instance &
+
+The VPN clients can be found in ~/opt/cisco/anyconnect/bin~. The vpnui
+version is the one that works
+
+: /opt/cisco/anyconnect/bin/vpnui
+
+*) there is no point in signing up with Cisco's website - they
+still don't allow the client download. Best way is to get it from
+UTHSC (support).
+
+** Openconnect
+
+UT uses Cisco VPNs which allow you to use your machine from outside as
+if it is on the local network. The following used to work but needs to
+be fixed with (duo) 2FA:
+
+I use the following entry point for UTHSC using [[http://www.infradead.org/openconnect/][openconnect]], but there
+are others you can use. Simply
+
+: openconnect --user=yourname https://uthscvpn1.uthsc.edu/ --passwd-on-stdin
+
+Type your password and ENTER and you should be able to get in. Note it
+will rewire the full network routing.
