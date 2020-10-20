@@ -162,14 +162,17 @@ Note the install script wants to install in /opt/cisco. You can modify that.
 : mkdir /opt/cisco
 : ./vpn_install.sh
 
-Which is running as ~/opt/cisco/anyconnect/bin/vpnagentd~ daemon with
+Which is running as ~/opt/cisco/anyconnect/bin/vpnagentd~ daemon. Start
+as root:
 
 : /opt/cisco/anyconnect/bin/vpnagentd -execv_instance &
 
 The VPN clients can be found in ~/opt/cisco/anyconnect/bin~. The vpnui
-version is the one that works
+version is the one that works. As a normal user:
 
 : /opt/cisco/anyconnect/bin/vpnui
+
+The connect is to ~UTHSCVPN~ with group ~UTHSC~.
 
 *) there is no point in signing up with Cisco's website - they
 still don't allow the client download. Best way is to get it from
