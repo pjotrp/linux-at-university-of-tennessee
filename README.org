@@ -4,11 +4,13 @@
  - [[#using-unix-ut][Using Unix @UT]]
    - [[#eduroam][Eduroam]]
    - [[#printing-and-the-vlan][Printing and the VLAN]]
-   - [[#2-factor-authentication][2-factor authentication]]
+   - [[#2-factor-duo-authentication][2-factor (DUO) authentication]]
    - [[#e-mail][E-mail]]
    - [[#webmail-and-microsoft-tools][Webmail and Microsoft tools]]
    - [[#vpn][VPN]]
    - [[#openconnect][Openconnect]]
+ - [[#troubleshooting][Troubleshooting]]
+   - [[#cisco-anyconnect][Cisco anyconnect]]
 
 * Using Unix @UT
 
@@ -121,14 +123,13 @@ respond to ipp://. It does work with above socket link. It may be advisable to u
 the DNS name, e.g. socket://tsrb-81795-410h.uthsc.edu. The driver that works best
 is Xerox Phaser 6360DN - CUPS+Gutenprint v5.2.11 (grayscale, 2-sided printing).
 
-** 2-factor authentication
+** 2-factor (DUO) authentication
 
 2-factor authentication was recently introduced. It requires a special
 app for Android/iPhone. Not exactly Linux specific and UT does not
 advertise it, but you can also get a token from the help desk. This is
-a preferred option because it always works (until the battery runs
-out).
-
+a preferred option because it is more secure and always works (until
+the battery runs out).
 
 ** TODO E-mail
 
@@ -150,9 +151,9 @@ Linux. That may be good enough for most of us.
 
 *** Cisco anyconnect
 
-UTHSC VPN requires two factor authentication (2FA) using the Cisco
-anyconnect protocol. What worked the first time is getting a recent
-version of the client *)
+UTHSC VPN requires two factor DUO authentication (2FA) using the Cisco
+anyconnect protocol. What worked is getting a recent version of the
+client *)
 
 : tar xvzf anyconnect-linux64-$VER-predeploy-k9.tar.gz
 : cd any*/vpn
@@ -167,18 +168,25 @@ as root:
 
 : /opt/cisco/anyconnect/bin/vpnagentd -execv_instance &
 
-The VPN clients can be found in ~/opt/cisco/anyconnect/bin~. The vpnui
-version is the one that works. As a normal user:
+The VPN clients can be found in
+=/opt/cisco/anyconnect/bin=. Important: as a normal user make sure the
+PATH is up-to-date and
 
-: /opt/cisco/anyconnect/bin/vpnui
+: export PATH=/opt/cisco/anyconnect/bin:$PATH
+: vpnui
 
+For description type ~UTHSC~.  Make sure to use upper case.  For the
+Server Address field type =uthscvpn1.uthsc.edu=.  Then click "Save".
 The connect is to ~UTHSCVPN~ with group ~UTHSC~.
 
-*) there is no point in signing up with Cisco's website - they
-still don't allow the client download. Best way is to get it from
-UTHSC (support).
+
+*) Note: there is no point in signing up with Cisco's website - they
+still don't allow the client download. Best way is to get the software
+from UTHSC directly (contact support).
 
 ** Openconnect
+
+/Note openconnect has not worked for us yet! See anyconnect/
 
 UT uses Cisco VPNs which allow you to use your machine from outside as
 if it is on the local network. The following used to work but needs to
@@ -189,5 +197,96 @@ are others you can use. Simply
 
 : openconnect --user=yourname https://uthscvpn1.uthsc.edu/ --passwd-on-stdin
 
-Type your password and ENTER and you should be able to get in. Note it
-will rewire the full network routing.
+Type your password and ENTER and you should be able to get in.
+
+* Troubleshooting
+
+** Cisco anyconnect
+
+anyconnect writes messages to /var/log/daemon.log.
+
+1. Authentication failed due to problem retrieving the single sign-on URL
+
+This is due to not setting the PATH to the cisco BIN directory.
+
+2. Other issues
+
+On my machine the profile =/opt/cisco/anyconnect/profile/UTHSC.xml=
+looks like
+
+#+begin_src xml
+<?xml version="1.0" encoding="UTF-8"?>
+<AnyConnectProfile xmlns="http://schemas.xmlsoap.org/encoding/" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://schemas.xmlsoap.org/encoding/ AnyConnectProfile.xsd">
+        <ClientInitialization>
+                <UseStartBeforeLogon UserControllable="true">true</UseStartBeforeLogon>
+                <AutomaticCertSelection UserControllable="true">false</AutomaticCertSelection>
+                <ShowPreConnectMessage>true</ShowPreConnectMessage>
+                <CertificateStore>All</CertificateStore>
+                <CertificateStoreMac>All</CertificateStoreMac>
+                <CertificateStoreOverride>false</CertificateStoreOverride>
+                <ProxySettings>Native</ProxySettings>
+                <AllowLocalProxyConnections>true</AllowLocalProxyConnections>
+                <AuthenticationTimeout>12</AuthenticationTimeout>
+                <AutoConnectOnStart UserControllable="true">false</AutoConnectOnStart>
+                <MinimizeOnConnect UserControllable="true">false</MinimizeOnConnect>
+                <LocalLanAccess UserControllable="true">true</LocalLanAccess>
+                <DisableCaptivePortalDetection UserControllable="false">false</DisableCaptivePortalDetection>
+                <ClearSmartcardPin UserControllable="true">true</ClearSmartcardPin>
+                <IPProtocolSupport>IPv4</IPProtocolSupport>
+                <AutoReconnect UserControllable="false">true
+                        <AutoReconnectBehavior UserControllable="false">ReconnectAfterResume</AutoReconnectBehavior>
+                </AutoReconnect>
+                <AutoUpdate UserControllable="false">true</AutoUpdate>
+                <RSASecurIDIntegration UserControllable="false">Automatic</RSASecurIDIntegration>
+                <WindowsLogonEnforcement>SingleLocalLogon</WindowsLogonEnforcement>
+                <WindowsVPNEstablishment>LocalUsersOnly</WindowsVPNEstablishment>
+                <AutomaticVPNPolicy>false</AutomaticVPNPolicy>
+                <PPPExclusion UserControllable="false">Disable
+                        <PPPExclusionServerIP UserControllable="false"></PPPExclusionServerIP>
+                </PPPExclusion>
+                <EnableScripting UserControllable="false">false</EnableScripting>
+                <EnableAutomaticServerSelection UserControllable="false">false
+                        <AutoServerSelectionImprovement>20</AutoServerSelectionImprovement>
+                        <AutoServerSelectionSuspendTime>4</AutoServerSelectionSuspendTime>
+                </EnableAutomaticServerSelection>
+                <RetainVpnOnLogoff>false
+                </RetainVpnOnLogoff>
+                <AllowManualHostInput>true</AllowManualHostInput>
+        </ClientInitialization>
+        <ServerList>
+                <HostEntry>
+                        <HostName>UTHSCVPN</HostName>
+                        <HostAddress>UTHSCVPN1.UTHSC.EDU</HostAddress>
+                        <BackupServerList>
+                                <HostAddress>UTHSCVPN2.UTHSC.EDU</HostAddress>
+                        </BackupServerList>
+                </HostEntry>
+        </ServerList>
+</AnyConnectProfile>
+#+end_src
+
+and the policy file is standard
+
+#+begin_src xml
+<?xml version="1.0" encoding="UTF-8"?>
+<AnyConnectLocalPolicy xmlns="http://schemas.xmlsoap.org/encoding/" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://schemas.xmlsoap.org/encoding/ AnyConnectLocalPolicy.xsd" acversion="4.9.00086">
+<BypassDownloader>false</BypassDownloader>
+<ExcludeFirefoxNSSCertStore>false</ExcludeFirefoxNSSCertStore>
+<ExcludeMacNativeCertStore>false</ExcludeMacNativeCertStore>
+<ExcludePemFileCertStore>false</ExcludePemFileCertStore>
+<ExcludeWinNativeCertStore>false</ExcludeWinNativeCertStore>
+<FipsMode>false</FipsMode>
+<RestrictPreferenceCaching>false</RestrictPreferenceCaching>
+<RestrictTunnelProtocols>false</RestrictTunnelProtocols>
+<RestrictWebLaunch>false</RestrictWebLaunch>
+<StrictCertificateTrust>false</StrictCertificateTrust>
+<UpdatePolicy>
+<AllowComplianceModuleUpdatesFromAnyServer>true</AllowComplianceModuleUpdatesFromAnyServer>
+<AllowISEProfileUpdatesFromAnyServer>true</AllowISEProfileUpdatesFromAnyServer>
+<AllowManagementVPNProfileUpdatesFromAnyServer>true</AllowManagementVPNProfileUpdatesFromAnyServer>
+<AllowServiceProfileUpdatesFromAnyServer>true</AllowServiceProfileUpdatesFromAnyServer>
+<AllowSoftwareUpdatesFromAnyServer>true</AllowSoftwareUpdatesFromAnyServer>
+<AllowVPNProfileUpdatesFromAnyServer>true</AllowVPNProfileUpdatesFromAnyServer></UpdatePolicy>
+</AnyConnectLocalPolicy>
+
+#+end_src
