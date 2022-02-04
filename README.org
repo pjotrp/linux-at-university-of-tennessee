@@ -8,20 +8,22 @@
    - [[#e-mail][E-mail]]
    - [[#webmail-and-microsoft-tools][Webmail and Microsoft tools]]
    - [[#vpn][VPN]]
+   - [[#cisco-anyconnect][Cisco anyconnect]]
    - [[#openconnect][Openconnect]]
  - [[#troubleshooting][Troubleshooting]]
    - [[#cisco-anyconnect][Cisco anyconnect]]
 
 * Using Unix @UT
 
-Despite the fact that Linux systems are common, many academic
-institutions make it challenging to run Linux and other Unices on
-laptops, workstations and servers. In bioinformatics, most tools are
-developed on Linux to run on servers it only makes sense to run Linux
-everywhere. That is what we do and that is what we document here where
-we proudly run Linux at the University of Tennessee.
+Despite the fact that Linux systems are increasingly common, many
+academic institutions are married to Microsoft and make it challenging
+to run Linux and other Unices on laptops, workstations and servers. In
+bioinformatics, most tools are developed on Linux to run on servers it
+only makes sense to run Linux everywhere. That is what we do and that
+is what we document here where we proudly run Linux at the University
+of Tennessee.
 
-Note that there are people in the IT department who know Linux. Simply
+Note that there are people in the IT departments who know Linux. Simply
 because they also have to run Linux machines!
 
 ** Eduroam
@@ -133,7 +135,9 @@ the battery runs out).
 
 ** TODO E-mail
 
-IMAP and forwarding are available.
+IMAP and forwarding are no longer available since January 2022. This
+is a real PAIN. Worse is the fact that UT is heavily in bed with
+Microsoft. And that means dealing with proprietary interfaces.
 
 ** Webmail and Microsoft tools
 
@@ -141,7 +145,7 @@ Webmail and other web-based tools work in Firefox. Some SAP-based
 tools require the Chrome browser. Your mileage may vary, but in
 general it is a good idea to try different browsers.
 
-Microsoft software provides by UT does not work on Linux. You can opt
+Microsoft software provided by UT does not work on Linux. You can opt
 to use Libreoffice/Openoffice and such, but it may be painful
 collaborating with people that use these tools (at least for shared
 writing). Note: it is possible to run Microsoft Office 2012 in Wine on
@@ -149,11 +153,11 @@ Linux. That may be good enough for most of us.
 
 ** VPN
 
-*** Cisco anyconnect
+** Cisco anyconnect
 
-UTHSC VPN requires two factor DUO authentication (2FA) using the Cisco
-anyconnect protocol. What worked is getting a recent version of the
-client *)
+UTHSC VPN requires two factor DUO authentication (2FA) using the
+propietary closed source (!) Cisco anyconnect tool. Note that anyconnect takes over the whole network on your Linux machine. May pay to run a VM. What works is
+getting a recent version of the client *)
 
 : tar xvzf anyconnect-linux64-$VER-predeploy-k9.tar.gz
 : cd any*/vpn
@@ -172,8 +176,10 @@ The VPN clients can be found in
 =/opt/cisco/anyconnect/bin=. Important: as a normal user make sure the
 PATH is up-to-date and
 
-: export PATH=/opt/cisco/anyconnect/bin:$PATH
-: vpnui
+```sh
+export PATH=/opt/cisco/anyconnect/bin:$PATH
+vpnui
+```
 
 For description type ~UTHSC~.  Make sure to use upper case.  For the
 Server Address field type =uthscvpn1.uthsc.edu=.  Then click "Save".
@@ -186,11 +192,13 @@ from UTHSC directly (contact support).
 
 ** Openconnect
 
-/Note openconnect has not worked for us yet! See anyconnect/
+/Note openconnect is not working right now! See anyconnect/
 
 UT uses Cisco VPNs which allow you to use your machine from outside as
 if it is on the local network. The following used to work but needs to
 be fixed with (duo) 2FA:
+
+/This information is out of date:/
 
 I use the following entry point for UTHSC using [[http://www.infradead.org/openconnect/][openconnect]], but there
 are others you can use. Simply
