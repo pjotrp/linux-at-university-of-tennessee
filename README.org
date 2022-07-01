@@ -26,6 +26,8 @@ of Tennessee.
 Note that there are people in the IT departments who know Linux. Simply
 because they also have to run Linux machines!
 
+For some other useful tips on using Linux see [[./TIPS.org]].
+
 ** Eduroam
 
 Eduroam works great on Linux with wpa_supplicant and network managers.
