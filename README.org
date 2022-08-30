@@ -8,8 +8,8 @@
    - [[#e-mail][E-mail]]
    - [[#webmail-and-microsoft-tools][Webmail and Microsoft tools]]
    - [[#vpn][VPN]]
-   - [[#cisco-anyconnect][Cisco anyconnect]]
    - [[#openconnect][Openconnect]]
+   - [[#cisco-anyconnect][Cisco anyconnect]]
  - [[#troubleshooting][Troubleshooting]]
    - [[#cisco-anyconnect][Cisco anyconnect]]
 
@@ -155,6 +155,17 @@ Linux. That may be good enough for most of us.
 
 ** VPN
 
+UTHSC VPN requires two factor DUO authentication (2FA). Both the proprietary tool and openconnect should work.
+
+** Openconnect
+
+Update: openconnect-sso does work!
+
+UT uses Cisco VPNs which allow you to use your machine from outside as
+if it is on the local network. The following is fixed with (duo) 2FA:
+
+See https://github.com/genenetwork/gn-gemtext-threads/blob/main/topics/uthsc-vpn-with-free-software.gmi
+
 ** Cisco anyconnect
 
 UTHSC VPN requires two factor DUO authentication (2FA) using the
@@ -191,23 +202,6 @@ The connect is to ~UTHSCVPN~ with group ~UTHSC~.
 *) Note: there is no point in signing up with Cisco's website - they
 still don't allow the client download. Best way is to get the software
 from UTHSC directly (contact support).
-
-** Openconnect
-
-/Note openconnect is not working right now! See anyconnect/
-
-UT uses Cisco VPNs which allow you to use your machine from outside as
-if it is on the local network. The following used to work but needs to
-be fixed with (duo) 2FA:
-
-/This information is out of date:/
-
-I use the following entry point for UTHSC using [[http://www.infradead.org/openconnect/][openconnect]], but there
-are others you can use. Simply
-
-: openconnect --user=yourname https://uthscvpn1.uthsc.edu/ --passwd-on-stdin
-
-Type your password and ENTER and you should be able to get in.
 
 * Troubleshooting
 
