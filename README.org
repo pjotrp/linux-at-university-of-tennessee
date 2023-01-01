@@ -135,23 +135,122 @@ advertise it, but you can also get a token from the help desk. This is
 a preferred option because it is more secure and always works (until
 the battery runs out). Renew the token every two years.
 
-** TODO E-mail
+** E-mail
 
-IMAP and forwarding are no longer available since January 2022. This
-is a real PAIN. Worse is the fact that UT is heavily in bed with
-Microsoft. And that means dealing with proprietary interfaces.
+IMAP and forwarding are no longer available since January 2022.
+This is a real PAIN.
+Worse is the fact that UT is heavily in bed with Microsoft.
+And that means dealing with proprietary interfaces.
+The best fix is to use davmail Exchange EWS which is typically exposed so people can run Outlook on their phones. To get it going test davmail with Thunderbird E-mail.
+After that any IMAP client should work:
+
+*** Davmail
+
+A recent version >5.5 of davmail supports 2FA. I used the following settings with success from outside the VPN:
+
+1. Exchange protocol: O365Manual
+2. Exchange URL:      https://outlook.office365.com/EWS/Exchange.asmx
+3. IMAP port local:   1143
+4. SMTP port local:   1025
+
+Your configuration should look like
+
+: cat .davmail.properties
+
+#+BEGIN_SOURCE
+davmail.ssl.keystoreType=
+davmail.ssl.keystorePass=
+davmail.proxyPassword=
+davmail.oauth.tenantId=
+davmail.oauth.myname@uthsc.edu.refreshToken={AES}M+BnyqKpDlwJ72v9I+KdskKA== etc.
+davmail.oauth.clientId=
+davmail.smtpPort=1025
+davmail.enableKerberos=false
+davmail.folderSizeLimit=
+davmail.forceActiveSyncUpdate=false
+davmail.imapAutoExpunge=true
+davmail.useSystemProxies=false
+davmail.proxyUser=
+davmail.caldavEditNotifications=false
+davmail.ssl.nosecuresmtp=false
+davmail.caldavPastDelay=0
+davmail.ssl.keyPass=
+log4j.logger.httpclient.wire=WARN
+davmail.noProxyFor=
+davmail.server=false
+log4j.logger.org.apache.commons.httpclient=WARN
+davmail.popMarkReadOnRetr=false
+davmail.ssl.nosecureimap=false
+davmail.disableTrayActivitySwitch=false
+davmail.caldavAutoSchedule=true
+davmail.enableProxy=false
+davmail.proxyPort=
+davmail.logFileSize=
+davmail.mode=O365Manual
+davmail.smtpSaveInSent=true
+davmail.bindAddress=
+davmail.ssl.nosecurepop=false
+davmail.ssl.pkcs11Library=
+log4j.rootLogger=WARN
+davmail.ssl.keystoreFile=
+log4j.logger.davmail=DEBUG
+davmail.ssl.clientKeystoreType=
+davmail.clientSoTimeout=
+davmail.ssl.pkcs11Config=
+davmail.imapPort=1143
+davmail.ssl.clientKeystorePass=
+davmail.url=https://outlook.office365.com/EWS/Exchange.asmx
+davmail.sentKeepDelay=0
+davmail.ssl.nosecureldap=false
+davmail.imapAlwaysApproxMsgSize=false
+davmail.ssl.nosecurecaldav=false
+davmail.popPort=
+davmail.defaultDomain=
+davmail.showStartupBanner=true
+davmail.proxyHost=
+davmail.ldapPort=1389
+davmail.server.certificate.hash=
+log4j.logger.org.apache.http.wire=WARN
+davmail.disableGuiNotifications=false
+davmail.imapIdleDelay=
+davmail.allowRemote=false
+davmail.disableUpdateCheck=false
+log4j.logger.org.apache.http=WARN
+davmail.caldavPort=1080
+davmail.enableKeepAlive=false
+davmail.ssl.clientKeystoreFile=
+davmail.logFilePath=
+davmail.carddavReadPhoto=true
+davmail.keepDelay=30
+davmail.oauth.redirectUri=
+davmail.caldavAlarmSound=
+#+END_SOURCE
+
+Note the oauth token appears the first time after logging in with 2FA and Thunderbird!
+
+*** Thunderbird E-mail
+
+Set up thunderbird after above davmail setup.
+
+To receive mail choose IMAP, servername 'localhost' and port 1143 with your UTHSC email as user name. Next, set connection security to 'None' and password submitted insecurely.
+
+Note that your details are sent securely to the remote server - we are just setting a local transport here that you can tweak after it works.
+
+Now you should be able to scan your E-mail. A 2FA screen should pop up.
+
+Next set up sending E-mail in the 'Outgoing Server' dialog. I added a new server with settings server name 'localhost', port 1025, connection security 'None', password sent insecured and username my UTHSC email again.
+
+Now send E-mail.
+
+Note that thunderbird can use multiple E-mail servers through its ' View|Folders|Unified' functionality.
 
 ** Webmail and Microsoft tools
 
-Webmail and other web-based tools work in Firefox. Some SAP-based
-tools require the Chrome browser. Your mileage may vary, but in
-general it is a good idea to try different browsers.
+Webmail and other web-based tools work in Firefox. Some SAP-based tools require the Chrome browser. Your mileage may vary, but in general it is a good idea to try different browsers.
 
-Microsoft software provided by UT does not work on Linux. You can opt
-to use Libreoffice/Openoffice and such, but it may be painful
-collaborating with people that use these tools (at least for shared
-writing). Note: it is possible to run Microsoft Office 2012 in Wine on
-Linux. That may be good enough for most of us.
+Microsoft software provided by UT does not work on Linux. You can opt to use Libreoffice/Openoffice and such, but it may be painful collaborating with people that use these tools (at least for shared writing). Note: it is possible to run Microsoft Office 2012 in Wine on Linux. That may be good enough for most of us.
+
+I am increasingly writing text in emacs markdown. Markdown can be translated to Word files using the `pandoc` tool. That includes references read from a bibtex database!
 
 ** VPN
 
@@ -159,7 +258,7 @@ UTHSC VPN requires two factor DUO authentication (2FA). Both the proprietary too
 
 ** Openconnect
 
-Update: openconnect-sso does work!
+Update: openconnect-sso does work now!
 
 UT uses Cisco VPNs which allow you to use your machine from outside as
 if it is on the local network. The following is fixed with (duo) 2FA:
