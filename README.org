@@ -130,10 +130,10 @@ is Xerox Phaser 6360DN - CUPS+Gutenprint v5.2.11 (grayscale, 2-sided printing).
 ** 2-factor (DUO) authentication
 
 2-factor authentication was recently introduced. It requires a special
-app for Android/iPhone. Not exactly Linux specific and UT does not
+app for Android/iPhone. Not exactly Linux specific, and UT does not
 advertise it, but you can also get a token from the help desk. This is
 a preferred option because it is more secure and always works (until
-the battery runs out).
+the battery runs out). Renew the token every two years.
 
 ** TODO E-mail
 
