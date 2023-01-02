@@ -153,11 +153,11 @@ A recent version >5.5 of davmail supports 2FA. I used the following settings wit
 3. IMAP port local:   1143
 4. SMTP port local:   1025
 
-Your configuration should look like
+Your configuration may look similar to
 
 : cat .davmail.properties
 
-#+BEGIN_SOURCE
+#+BEGIN_SRC
 davmail.ssl.keystoreType=
 davmail.ssl.keystorePass=
 davmail.proxyPassword=
@@ -224,7 +224,7 @@ davmail.carddavReadPhoto=true
 davmail.keepDelay=30
 davmail.oauth.redirectUri=
 davmail.caldavAlarmSound=
-#+END_SOURCE
+#+END_SRC
 
 Note the oauth token appears the first time after logging in with 2FA and Thunderbird!
 
@@ -232,15 +232,27 @@ Note the oauth token appears the first time after logging in with 2FA and Thunde
 
 Set up thunderbird after above davmail setup.
 
-To receive mail choose IMAP, servername 'localhost' and port 1143 with your UTHSC email as user name. Next, set connection security to 'None' and password submitted insecurely.
+To receive mail choose IMAP:
+
+# servername 'localhost'
+# port 1143
+# with your UTHSC email as user name
+# set connection security to 'None'
+# password submitted insecurely
 
 Note that your details are sent securely to the remote server - we are just setting a local transport here that you can tweak after it works.
 
 Now you should be able to scan your E-mail. A 2FA screen should pop up.
 
-Next set up sending E-mail in the 'Outgoing Server' dialog. I added a new server with settings server name 'localhost', port 1025, connection security 'None', password sent insecured and username my UTHSC email again.
+Next set up sending E-mail in the 'Outgoing Server' dialog. I added a new server with settings
 
-Now send E-mail.
+# server name 'localhost'
+# port 1025
+# connection security 'None'
+# password sent insecured and
+# username my UTHSC email again
+
+Now try to send E-mail.
 
 Note that thunderbird can use multiple E-mail servers through its ' View|Folders|Unified' functionality.
 
