@@ -234,11 +234,11 @@ Set up thunderbird after above davmail setup.
 
 To receive mail choose IMAP:
 
-# servername 'localhost'
-# port 1143
-# with your UTHSC email as user name
-# set connection security to 'None'
-# password submitted insecurely
+- servername 'localhost'
+- port 1143
+- with your UTHSC email as user name
+- set connection security to 'None'
+- password submitted insecurely
 
 Note that your details are sent securely to the remote server - we are just setting a local transport here that you can tweak after it works.
 
@@ -246,11 +246,11 @@ Now you should be able to scan your E-mail. A 2FA screen should pop up.
 
 Next set up sending E-mail in the 'Outgoing Server' dialog. I added a new server with settings
 
-# server name 'localhost'
-# port 1025
-# connection security 'None'
-# password sent insecured and
-# username my UTHSC email again
+- server name 'localhost'
+- port 1025
+- connection security 'None'
+- password sent insecured and
+- username my UTHSC email again
 
 Now try to send E-mail.
 
